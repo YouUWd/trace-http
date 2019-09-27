@@ -12,22 +12,21 @@ import (
 )
 
 var (
-	device      string = "lo0"
-	snapshotLen int32  = 1024
-	promiscuous bool   = false
+	snapshotLen int32 = 1024
+	promiscuous bool  = false
 	err         error
 	timeout     time.Duration = 30 * time.Second
 	handle      *pcap.Handle
 )
 
 func main() {
-	device = *flag.String("i", "lo0", "default device to listen on")
+	device := flag.String("i", "lo0", "default device to listen on")
 	filter := flag.String("f", "host 127.0.0.1 and port 8080", "default filter (eg: host 127.0.0.1 and port 8080)")
 	flag.Parse()
 
-	fmt.Println("You are listening on", device, "with filter string \""+*filter+"\"")
+	fmt.Println("You are listening on", *device, "with filter string \""+*filter+"\"")
 	// Open device
-	handle, err = pcap.OpenLive(device, snapshotLen, promiscuous, timeout)
+	handle, err = pcap.OpenLive(*device, snapshotLen, promiscuous, timeout)
 	if err != nil {
 		log.Fatal(err)
 	}
